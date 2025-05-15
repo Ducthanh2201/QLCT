@@ -1,0 +1,37 @@
+/ExpenseManager
+│
+├── /app
+│   ├── /controllers
+│   │   ├── ExpenseController.php
+│   │   └── UserController.php
+│   │
+│   ├── /models
+│   │   ├── Expense.php
+│   │   └── User.php
+│   │
+│   └── /views
+│       ├── /expenses
+│       │   ├── index.php
+│       │   ├── create.php
+│       │   └── edit.php
+│       │
+│       ├── /users
+│       │   ├── index.php
+│       │   └── profile.php
+│       │
+│       └── layout.php
+│
+├── /public
+│   ├── /assets
+│   │   ├── /css
+│   │   ├── /js
+│   │   └── /images
+│   │
+│   ├── index.php
+│   └── .htaccess
+│
+├── /config
+│   ├── config.php
+│   └── database.php
+│
+└── /vendor

@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /ADM-QLCT/expense-management/
+
+    # Cho phép truy cập trực tiếp vào thư mục uploads
+    RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+    # Cho phép truy cập trực tiếp các tài nguyên tĩnh từ thư mục public
+    RewriteRule ^(css|js|images|assets)/(.*)$ public/$1/$2 [L]
+
+    # Chuyển hướng tất cả các URL khác vào public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php?url=$1 [QSA,L]
+</IfModule>

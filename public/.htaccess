@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    Options -Multiviews
+    RewriteEngine On
+    RewriteBase /ADM-QLCT/expense-management/public/
+    
+    # Ghi log cho mục đích debug
+    RewriteRule .* - [E=REWRITTEN_URL:%{REQUEST_URI}]
+    
+    # Không áp dụng rewrite cho các file và thư mục thật
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Rewrite tất cả các URL vào index.php
+    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
