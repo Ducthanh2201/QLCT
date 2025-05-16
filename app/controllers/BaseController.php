@@ -26,47 +26,25 @@ class BaseController {
     // Hàm load view đã cải tiến
     public function view($view, $data = []) {
         try {
-            error_log("[View] Attempting to load view: " . $view);
+            error_log("[BaseController] Loading view: " . $view);
             
             // Xây dựng đường dẫn đầy đủ đến file view
             $viewFile = APPROOT . '/views/' . $view . '.php';
-            error_log("[View] Full path: " . $viewFile);
+            error_log("[BaseController] Full path: " . $viewFile);
             
             // Kiểm tra xem file view có tồn tại không
             if (!file_exists($viewFile)) {
-                error_log("[View] View file not found: " . $viewFile);
-                
-                // Thử tìm với tên khác cho expense detail view
-                if ($view === 'expenses/expense_detail' || $view === 'expenses/detail') {
-                    $alternativePaths = [
-                        APPROOT . '/views/expenses/expense_detail.php',
-                        APPROOT . '/views/expenses/detail.php',
-                        APPROOT . '/views/expenses/view.php'
-                    ];
-                    
-                    foreach ($alternativePaths as $path) {
-                        error_log("[View] Trying alternative path: " . $path);
-                        if (file_exists($path)) {
-                            $viewFile = $path;
-                            error_log("[View] Found alternative view file: " . $viewFile);
-                            break;
-                        }
-                    }
-                }
-                
-                // Nếu vẫn không tìm thấy file view
-                if (!file_exists($viewFile)) {
-                    // Thêm kiểm tra cuối cùng để debug
-                    $testPath = APPROOT . '/views/expenses';
-                    error_log("[View] Checking directory: " . $testPath);
-                    if (is_dir($testPath)) {
-                        error_log("[View] Directory exists, listing files:");
-                        foreach (scandir($testPath) as $f) {
-                            error_log("- " . $f);
-                        }
-                    }
-                    
-                    throw new Exception("View file not found: " . $view);
+                error_log("[BaseController] View file not found: " . $viewFile);
+                throw new Exception("View file not found: " . $view);
+            }
+            
+            // Hiện thị danh sách các file trong thư mục đó để debug
+            $viewDir = dirname($viewFile);
+            error_log("[BaseController] Checking directory: " . $viewDir);
+            if (is_dir($viewDir)) {
+                error_log("[BaseController] Directory exists, files:");
+                foreach (scandir($viewDir) as $file) {
+                    error_log("- " . $file);
                 }
             }
             
@@ -74,24 +52,20 @@ class BaseController {
             extract($data);
             
             // Thực hiện include file view
+            ob_start(); // Bắt đầu output buffering
             require $viewFile;
+            $content = ob_get_clean(); // Lấy nội dung và xóa buffer
+            
+            echo $content; // Xuất nội dung
             
         } catch (Exception $e) {
-            error_log("[View] Error: " . $e->getMessage());
+            error_log("[BaseController] Error in view method: " . $e->getMessage());
             
-            // Thay vì chuyển hướng, hiển thị thông báo lỗi thân thiện
             echo '<div style="margin: 30px; padding: 20px; border: 1px solid #dc3545; background-color: #f8d7da; color: #721c24; border-radius: 5px;">';
             echo '<h3>Lỗi khi hiển thị trang</h3>';
             echo '<p>' . htmlspecialchars($e->getMessage()) . '</p>';
             echo '<p>Vui lòng liên hệ quản trị viên hệ thống.</p>';
-            
-            if(defined('ENVIRONMENT') && ENVIRONMENT === 'development') {
-                echo '<hr>';
-                echo '<h4>Chi tiết lỗi (chỉ hiển thị trong môi trường phát triển):</h4>';
-                echo '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
-            }
-            
-            echo '<p><a href="' . BASEURL . '/expenses">Quay lại danh sách chi tiêu</a></p>';
+            echo '<p><a href="' . BASEURL . '/dashboard">Quay lại trang chủ</a></p>';
             echo '</div>';
         }
     }

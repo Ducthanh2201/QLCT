@@ -1,39 +1,28 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <ul class="nav">
     <li class="nav-item nav-profile border-bottom">
-      <a href="#" class="nav-link flex-column">
+      <a href="<?php echo BASEURL; ?>/profile" class="nav-link flex-column">
         <div class="nav-profile-image">
-          <img src="<?php echo BASEURL; ?>/assets/images/faces/face1.jpg" alt="profile" />
-          <!--change to offline or busy as needed-->
+          <img src="<?php echo BASEURL; ?>/assets/images/faces/face1.jpg" alt="profile">
         </div>
-        <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
-          <span class="font-weight-semibold mb-1 mt-2 text-center"><?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Khách'; ?></span>
-          <span class="text-secondary icon-sm text-center">
-            <?php 
-              echo isset($_SESSION['total_balance']) ? number_format($_SESSION['total_balance'], 0, ',', '.') . 'đ' : '0đ'; 
-            ?>
-          </span>
+        <div class="nav-profile-text d-flex flex-column mt-3">
+          <span class="font-weight-bold mb-2"><?php echo $_SESSION['username'] ?? 'Người dùng'; ?></span>
+          <span class="text-secondary text-small"><?php echo $_SESSION['email'] ?? ''; ?></span>
         </div>
       </a>
     </li>
     <li class="nav-item pt-3">
       <a class="nav-link d-block" href="<?php echo BASEURL; ?>/dashboard">
+        <img class="sidebar-brand-logo" src="<?php echo BASEURL; ?>/assets/images/logo.png" alt="" height="40">
+        <h4>Quản lý chi tiêu</h4>
       </a>
-      <form class="d-flex align-items-center" action="#">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <i class="input-group-text border-0 mdi mdi-magnify"></i>
-          </div>
-          <input type="text" class="form-control border-0" placeholder="Tìm kiếm" />
-        </div>
-      </form>
     </li>
     <li class="pt-2 pb-1">
       <span class="nav-item-head">Trang quản trị</span>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="<?php echo BASEURL; ?>/dashboard">
-        <i class="mdi mdi-compass-outline menu-icon"></i>
+        <i class="mdi mdi-view-dashboard menu-icon"></i>
         <span class="menu-title">Tổng quan</span>
       </a>
     </li>
@@ -97,7 +86,7 @@
     </li>
     <li class="nav-item">
       <a class="nav-link" href="<?php echo BASEURL; ?>/payment-methods">
-        <i class="mdi mdi-credit-card-multiple menu-icon"></i>
+        <i class="mdi mdi-credit-card menu-icon"></i>
         <span class="menu-title">Phương thức thanh toán</span>
       </a>
     </li>
